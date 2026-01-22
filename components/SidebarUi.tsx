@@ -12,7 +12,7 @@ export function SidebarDemo() {
     return (
         <div
             className={cn(
-                "mx-auto flex flex-1 flex-col overflow-hidden rounded-md border md:flex-row border-neutral-700 :bg-neutral-800",
+                "mx-auto flex flex-1 flex-col md:overflow-hidden overflow-y-auto rounded-md border md:flex-row border-neutral-700 :bg-neutral-800",
                 "h-screen",
             )}
         >

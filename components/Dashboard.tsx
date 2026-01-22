@@ -1,6 +1,7 @@
 "use client";
 
-import { FolderPlus, Folders, FileText, Scale, Clock, Bell, MessageSquare } from "lucide-react";
+import { useState } from "react";
+import { FolderPlus, Folders, FileText, Scale, Clock, Bell, MessageSquare, X } from "lucide-react";
 
 // Placeholder data for recent workspaces
 const recentWorkspaces = [
@@ -55,8 +56,10 @@ const notifications = [
 ];
 
 const Dashboard = () => {
+    const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
     return (
-        <div className="w-full bg-neutral-950 p-3 pb-8 sm:p-4 sm:pb-10 md:p-6 md:pb-6 min-h-screen md:h-screen overflow-y-auto md:overflow-hidden rounded-none sm:rounded-l-xl md:rounded-l-2xl">
+        <div className="w-full bg-neutral-950 p-3 sm:p-4 sm:pb-15 md:p-6 md:pb-6 min-h-screen md:h-screen overflow-y-auto md:overflow-hidden rounded-none sm:rounded-l-xl md:rounded-l-2xl">
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-5 h-auto lg:h-full">
 
                 {/* LEFT SIDE */}
@@ -116,7 +119,7 @@ const Dashboard = () => {
                 {/* RIGHT SIDE - Interactive height container */}
                 <div className="lg:col-span-4 flex flex-col gap-4 sm:gap-5 lg:h-full lg:overflow-hidden group/sidebar">
 
-                    {/* Notifications - Shrinks when chatbot is hovered */}
+                    {/* Notifications */}
                     <div className="rounded-xl sm:rounded-2xl bg-neutral-900/80 p-4 sm:p-5 overflow-hidden border border-neutral-800 transition-all duration-500 ease-out lg:flex-[2] lg:group-hover/chatbot:flex-[1] lg:min-h-0 flex flex-col">
                         <h2 className="text-base sm:text-lg font-semibold text-neutral-100 mb-3 sm:mb-4 flex items-center gap-2 shrink-0">
                             <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400" />
@@ -132,8 +135,8 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                    {/* Legal Assistant (Chatbot) - Expands on hover */}
-                    <div className="group/chatbot rounded-xl sm:rounded-2xl bg-neutral-900/80 p-4 sm:p-5 overflow-hidden flex flex-col border border-neutral-800 transition-all duration-500 ease-out lg:flex-[2] lg:hover:flex-[4] lg:min-h-0">
+                    {/* Legal Assistant (Chatbot) - Desktop only, hidden on mobile */}
+                    <div className="hidden lg:flex group/chatbot rounded-xl sm:rounded-2xl bg-neutral-900/80 p-4 sm:p-5 overflow-hidden flex-col border border-neutral-800 transition-all duration-500 ease-out lg:flex-[2] lg:hover:flex-[4] lg:min-h-0">
                         <h2 className="text-base sm:text-lg font-semibold text-neutral-100 mb-3 sm:mb-4 flex items-center gap-2 shrink-0">
                             <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400" />
                             Legal Assistant
@@ -156,6 +159,65 @@ const Dashboard = () => {
                         </div>
                     </div>
 
+                </div>
+            </div>
+
+            {/* Mobile Floating Chatbot FAB + Expandable Panel */}
+            <div className="lg:hidden">
+                {/* Floating Action Button */}
+                <button
+                    onClick={() => setIsChatbotOpen(true)}
+                    className={`fixed bottom-6 right-6 w-14 h-14 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center shadow-lg shadow-black/30 transition-all duration-300 ease-out active:scale-95 z-40 ${isChatbotOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
+                >
+                    <MessageSquare className="w-6 h-6 text-neutral-300" />
+                </button>
+
+                {/* Backdrop */}
+                <div
+                    onClick={() => setIsChatbotOpen(false)}
+                    className={`fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-40 ${isChatbotOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                />
+
+                {/* Expandable Chatbot Panel */}
+                <div
+                    className={`fixed bottom-6 right-4 left-4 sm:left-auto sm:right-6 sm:w-96 bg-neutral-900 border border-neutral-700 rounded-2xl shadow-2xl shadow-black/50 transition-all duration-300 ease-out z-50 overflow-hidden ${isChatbotOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-4 scale-95 pointer-events-none'}`}
+                    style={{ maxHeight: 'calc(100vh - 120px)' }}
+                >
+                    {/* Header with close button */}
+                    <div className="flex items-center justify-between p-4 border-b border-neutral-800">
+                        <h2 className="text-base font-semibold text-neutral-100 flex items-center gap-2">
+                            <MessageSquare className="w-5 h-5 text-neutral-400" />
+                            Legal Assistant
+                        </h2>
+                        <button
+                            onClick={() => setIsChatbotOpen(false)}
+                            className="w-8 h-8 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center hover:bg-neutral-700 active:bg-neutral-600 transition-colors"
+                        >
+                            <X className="w-4 h-4 text-neutral-400" />
+                        </button>
+                    </div>
+
+                    {/* Chat Content */}
+                    <div className="p-4 flex-1 overflow-y-auto scrollbar-hide" style={{ minHeight: '200px', maxHeight: 'calc(100vh - 280px)' }}>
+                        <div className="text-center py-8">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-neutral-800 border border-neutral-700 flex items-center justify-center">
+                                <MessageSquare className="w-7 h-7 text-neutral-400" />
+                            </div>
+                            <p className="text-sm text-neutral-500">Ask questions about legal documents, get drafting assistance, or find templates.</p>
+                        </div>
+                    </div>
+
+                    {/* Input Area */}
+                    <div className="p-4 border-t border-neutral-800">
+                        <div className="p-3 rounded-xl bg-neutral-950 border border-neutral-800 text-neutral-500 text-sm flex items-center gap-2 hover:border-neutral-600 transition-colors cursor-text">
+                            <span className="flex-1 truncate">Type a message...</span>
+                            <div className="w-9 h-9 rounded-lg bg-neutral-700 flex items-center justify-center hover:bg-neutral-600 active:bg-neutral-500 transition-colors cursor-pointer shrink-0">
+                                <svg className="w-4 h-4 text-neutral-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
