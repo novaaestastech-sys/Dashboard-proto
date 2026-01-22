@@ -120,7 +120,7 @@ export const MobileSidebar = ({
       >
         <div className="flex justify-end z-20 w-full">
           <IconMenu2
-            className="text-neutral-800 dark:text-neutral-200"
+            className="text-neutral-200"
             onClick={() => setOpen(!open)}
           />
         </div>
