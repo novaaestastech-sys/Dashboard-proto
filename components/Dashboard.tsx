@@ -56,7 +56,7 @@ const notifications = [
 
 const Dashboard = () => {
     return (
-        <div className="w-full bg-neutral-950 p-3 sm:p-4 md:p-6 min-h-screen md:h-screen md:mb-10 sm:mb-10 overflow-y-auto md:overflow-hidden rounded-none sm:rounded-l-xl md:rounded-l-2xl">
+        <div className="w-full bg-neutral-950 p-3 pb-8 sm:p-4 sm:pb-10 md:p-6 md:pb-6 min-h-screen md:h-screen overflow-y-auto md:overflow-hidden rounded-none sm:rounded-l-xl md:rounded-l-2xl">
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-5 h-auto lg:h-full">
 
                 {/* LEFT SIDE */}
