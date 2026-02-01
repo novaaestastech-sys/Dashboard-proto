@@ -55,7 +55,11 @@ const notifications = [
     { id: 3, text: "Deadline: Smith case filing due tomorrow", time: "2 hours ago" },
 ];
 
-const Dashboard = () => {
+interface DashboardProps {
+    onNewWorkspace?: () => void;
+}
+
+const Dashboard = ({ onNewWorkspace }: DashboardProps) => {
     const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
     return (
@@ -74,7 +78,10 @@ const Dashboard = () => {
 
                     {/* Action Buttons */}
                     <div className="grid grid-cols-2 gap-3 sm:gap-5 shrink-0">
-                        <div className="h-16 sm:h-20 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center gap-2 sm:gap-3 text-neutral-200 hover:border-neutral-600 hover:bg-neutral-800/80 active:bg-neutral-800 transition-all duration-300 cursor-pointer group">
+                        <div
+                            onClick={onNewWorkspace}
+                            className="h-16 sm:h-20 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center gap-2 sm:gap-3 text-neutral-200 hover:border-neutral-600 hover:bg-neutral-800/80 active:bg-neutral-800 transition-all duration-300 cursor-pointer group"
+                        >
                             <FolderPlus className="w-4 h-4 sm:w-5 sm:h-5 text-neutral-400 group-hover:text-neutral-200 group-active:text-neutral-200 group-hover:scale-110 transition-all" />
                             <span className="font-medium text-sm sm:text-base">New Workspace</span>
                         </div>

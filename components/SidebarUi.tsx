@@ -5,10 +5,24 @@ import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Dashboard from "./Dashboard";
+import WorkspaceView from "./WorkspaceView";
+
+type ViewState = "dashboard" | "workspace";
 
 export function SidebarDemo() {
-
     const [open, setOpen] = useState(false);
+    const [currentView, setCurrentView] = useState<ViewState>("dashboard");
+    const [selectedWorkspaceName, setSelectedWorkspaceName] = useState("");
+
+    const handleNewWorkspace = () => {
+        setSelectedWorkspaceName("New Workspace");
+        setCurrentView("workspace");
+    };
+
+    const handleBackToDashboard = () => {
+        setCurrentView("dashboard");
+    };
+
     return (
         <div
             className={cn(
@@ -19,7 +33,7 @@ export function SidebarDemo() {
             <Sidebar open={open} setOpen={setOpen}>
                 <SidebarBody className="justify-between gap-10">
                     <div className="flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-                        <Image src="/Logo.png" alt="logo" width={50} height={50} />
+                        <Image src="/Logo.png" alt="logo" width="50" height="50" />
                     </div>
                     <div>
                         <SidebarLink
@@ -40,10 +54,18 @@ export function SidebarDemo() {
                     </div>
                 </SidebarBody>
             </Sidebar>
-            <Dashboard />
+            {currentView === "dashboard" ? (
+                <Dashboard onNewWorkspace={handleNewWorkspace} />
+            ) : (
+                <WorkspaceView
+                    workspaceName={selectedWorkspaceName}
+                    onBack={handleBackToDashboard}
+                />
+            )}
         </div>
     );
 }
+
 export const Home = () => {
     return (
         <a
